@@ -1,6 +1,11 @@
 use std::io::{Read, Result, Write};
+use yara_sys::YR_STREAM;
 
-use yara_sys::{size_t, YR_STREAM};
+#[cfg(all(windows, target_arch = "aarch64"))]
+pub type YaraSizeT = yara_sys::YaraSizeT;
+
+#[cfg(not(any(all(windows, target_arch = "aarch64"))))]
+pub type YaraSizeT = yara_sys::size_t;
 
 pub struct ReadStream<'r> {
     reader: &'r mut dyn Read,
@@ -56,10 +61,10 @@ impl<'w> WriteStream<'w> {
 
 unsafe extern "C" fn stream_read_func(
     ptr: *mut ::std::os::raw::c_void,
-    size: size_t,
-    count: size_t,
+    size: YaraSizeT,
+    count: YaraSizeT,
     user_data: *mut ::std::os::raw::c_void,
-) -> size_t {
+) -> YaraSizeT {
     let this: &mut ReadStream = &mut *(user_data as *mut ReadStream);
     if this.result.is_err() {
         return 0;
@@ -70,7 +75,7 @@ unsafe extern "C" fn stream_read_func(
 
     match result {
         // FIXME: what if read_size is not a multiple of size ?
-        Ok(read_size) => read_size as size_t / size,
+        Ok(read_size) => read_size as YaraSizeT / size,
         Err(e) => {
             this.result = Err(e);
             0
@@ -80,10 +85,10 @@ unsafe extern "C" fn stream_read_func(
 
 unsafe extern "C" fn stream_write_func(
     ptr: *const ::std::os::raw::c_void,
-    size: size_t,
-    count: size_t,
+    size: YaraSizeT,
+    count: YaraSizeT,
     user_data: *mut ::std::os::raw::c_void,
-) -> size_t {
+) -> YaraSizeT {
     let this: &mut WriteStream = &mut *(user_data as *mut WriteStream);
     if this.result.is_err() {
         return 0;
