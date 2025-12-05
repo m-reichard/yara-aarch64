@@ -2,7 +2,7 @@ use std::io::{Read, Result, Write};
 use yara_sys::YR_STREAM;
 
 #[cfg(all(windows, target_arch = "aarch64"))]
-pub type YaraSizeT = yara_sys::SIZE_T;
+pub type YaraSizeT = usize;
 
 #[cfg(not(any(all(windows, target_arch = "aarch64"))))]
 pub type YaraSizeT = yara_sys::size_t;
