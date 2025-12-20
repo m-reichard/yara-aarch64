@@ -373,11 +373,25 @@ mod bindings {
         let binding_path = PathBuf::from("bindings").join(binding_file);
         let out_dir = env::var("OUT_DIR").expect("$OUT_DIR should be defined");
         let out_path = PathBuf::from(out_dir).join("bindings.rs");
+
+        println!(
+            "cargo:warning=Looking for binding file: {:?}",
+            binding_path.display()
+        );
+        println!(
+            "cargo:warning=Current working directory: {:?}",
+            std::env::current_dir()
+        );
+        println!(
+            "cargo:warning=Binding file exists: {:?}",
+            binding_path.exists()
+        );
+
         if binding_path.is_file() {
             fs::copy(binding_path, out_path).expect("Could not copy bindings to output directory");
         } else {
             println!(
-                "cargo:warning=Bindings for target=\"{}\" does not exists",
+                "cargo:warning=Bindings for target=\"{}\" do not exist",
                 env::var("TARGET").unwrap()
             );
             std::process::exit(1);
