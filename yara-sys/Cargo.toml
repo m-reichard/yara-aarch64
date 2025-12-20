@@ -12,9 +12,10 @@ links = "yara"
 edition = "2018"
 
 [features]
-default = ["bindgen", 'module-dotnet', 'module-dex', 'module-macho', 'module-hash', 'ndebug']
+default = ["bundled-4_5_5", "vendored", 'module-dotnet', 'module-dex', 'module-macho', 'module-hash', 'ndebug']
 bundled-4_5_5 = []
 vendored = ["cc", "glob", "fs_extra"]
+bindgen = ["dep:bindgen"]
 module-cuckoo = []
 module-magic = []
 module-macho = []

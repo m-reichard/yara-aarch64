@@ -15,7 +15,7 @@ edition = "2021"
 rust-version = "1.63"
 
 [features]
-default = ["bindgen", 'module-dotnet', 'module-dex', 'module-macho', 'module-hash', 'ndebug',]
+default = ["bundled-4_5_5", "vendored", "module-dotnet", "module-dex", "module-macho", "module-hash", "ndebug"]
 bindgen = ["yara-sys/bindgen"]
 bundled-4_5_5 = ["yara-sys/bundled-4_5_5"]
 vendored = ["yara-sys/vendored"]
