@@ -144,10 +144,26 @@ pub struct RuleIterator<'a> {
     _marker: marker::PhantomData<&'a yara_sys::YR_RULE>,
 }
 
+// impl<'a> From<&'a yara_sys::YR_RULES> for RuleIterator<'a> {
+//     fn from(rules: &'a yara_sys::YR_RULES) -> RuleIterator<'a> {
+//         RuleIterator {
+//             head: rules.get_rules_table(),
+//             _marker: marker::PhantomData,
+//         }
+//     }
+// }
 impl<'a> From<&'a yara_sys::YR_RULES> for RuleIterator<'a> {
     fn from(rules: &'a yara_sys::YR_RULES) -> RuleIterator<'a> {
+        let head = unsafe {
+            // cast to get the proper pointer
+            let ptr = rules as *const yara_sys::YR_RULES as *const u8;
+            let offset = std::mem::size_of::<*mut yara_sys::YR_ARENA>(); // Skip arena field
+            let rules_table_ptr = ptr.add(offset) as *const *mut yara_sys::YR_RULE;
+            *rules_table_ptr
+        };
+
         RuleIterator {
-            head: rules.get_rules_table(),
+            head,
             _marker: marker::PhantomData,
         }
     }
