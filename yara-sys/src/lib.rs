@@ -72,7 +72,7 @@ impl YR_NAMESPACE {
 
 impl YR_RULES {
     pub fn get_rules_table(&self) -> *const YR_RULE {
-        unsafe { self.__bindgen_anon_1.rules_table }
+        unsafe { self._bindgen_opaque_blob.rules_table }
     }
 }
 
