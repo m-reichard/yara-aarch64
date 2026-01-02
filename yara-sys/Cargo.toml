@@ -28,6 +28,9 @@ ndebug = []
 openssl-static = []
 yara-static = []
 
+[dependencies]
+libc = "0.2"
+
 [build-dependencies]
 bindgen = { version = "0.68", optional = true, default-features = false, features = [ "runtime" ] }
 cc = { version = "1.0", optional = true }
