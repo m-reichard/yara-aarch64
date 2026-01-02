@@ -144,6 +144,15 @@ pub struct RuleIterator<'a> {
     _marker: marker::PhantomData<&'a yara_sys::YR_RULE>,
 }
 
+impl<'a> From<&'a yara_sys::YR_RULES> for RuleIterator<'a> {
+    fn from(rules: &'a yara_sys::YR_RULES) -> RuleIterator<'a> {
+        RuleIterator {
+            head: rules.get_rules_table(),
+            _marker: marker::PhantomData,
+        }
+    }
+}
+
 impl<'a> Iterator for RuleIterator<'a> {
     type Item = RulesetRule<'a>;
 
