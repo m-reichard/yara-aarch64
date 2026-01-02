@@ -5,7 +5,7 @@ use yara_sys::YR_STREAM;
 pub type YaraSizeT = usize;
 
 #[cfg(not(any(all(windows, target_arch = "aarch64"))))]
-pub type YaraSizeT = yara_sys::rsize_t;
+pub type YaraSizeT = usize;
 
 pub struct ReadStream<'r> {
     reader: &'r mut dyn Read,
