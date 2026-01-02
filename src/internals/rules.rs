@@ -155,11 +155,28 @@ pub struct RuleIterator<'a> {
 impl<'a> From<&'a yara_sys::YR_RULES> for RuleIterator<'a> {
     fn from(rules: &'a yara_sys::YR_RULES) -> RuleIterator<'a> {
         let head = unsafe {
-            // cast to get the proper pointer
-            let ptr = rules as *const yara_sys::YR_RULES as *const u8;
-            let offset = std::mem::size_of::<*mut yara_sys::YR_ARENA>(); // Skip arena field
-            let rules_table_ptr = ptr.add(offset) as *const *mut yara_sys::YR_RULE;
-            *rules_table_ptr
+            // Try different approaches based on what's available in the bindings
+            #[cfg(any(
+                target_os = "macos",
+                all(target_arch = "x86_64", target_os = "linux", target_env = "gnu")
+            ))]
+            {
+                // For targets with proper struct fields
+                rules.__bindgen_anon_1.rules_table
+            }
+
+            #[cfg(not(any(
+                target_os = "macos",
+                all(target_arch = "x86_64", target_os = "linux", target_env = "gnu")
+            )))]
+            {
+                // For targets with opaque blobs - use pointer arithmetic
+                // The rules_table is the second field after arena pointer
+                let ptr = rules as *const yara_sys::YR_RULES as *const u8;
+                let offset = std::mem::size_of::<*mut yara_sys::YR_ARENA>();
+                let rules_table_ptr = ptr.add(offset) as *const *mut yara_sys::YR_RULE;
+                *rules_table_ptr
+            }
         };
 
         RuleIterator {
@@ -167,6 +184,17 @@ impl<'a> From<&'a yara_sys::YR_RULES> for RuleIterator<'a> {
             _marker: marker::PhantomData,
         }
     }
+}
+
+pub fn get_rules<'a>(ruleset: *mut yara_sys::YR_RULES) -> Vec<RulesetRule<'a>> {
+    // Use a safe method to get number of rules
+    let mut result: Vec<RulesetRule> = Vec::new();
+
+    for rule in RuleIterator::from(unsafe { &*ruleset }) {
+        result.push(rule);
+    }
+
+    result
 }
 
 impl<'a> Iterator for RuleIterator<'a> {
@@ -180,7 +208,10 @@ impl<'a> Iterator for RuleIterator<'a> {
         let rule = unsafe { *self.head };
         let mut result: Option<Self::Item> = None;
 
-        if ((rule.flags as u32) & yara_sys::RULE_FLAGS_NULL) != 0 {
+        // Check for NULL rule - use a more portable approach
+        // RULE_FLAGS_NULL might not be available on all targets
+        if rule.flags & 0x4u32 != 0 {
+            // 0x4 is RULE_FLAGS_NULL value
             self.head = std::ptr::null();
         } else {
             let rule_data = Rule::from(unsafe { &*self.head });

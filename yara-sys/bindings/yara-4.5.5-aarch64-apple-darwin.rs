@@ -11439,6 +11439,8 @@ pub const task_role_TASK_DARWINBG_APPLICATION: task_role = 8;
 pub const task_role_TASK_USER_INIT_APPLICATION: task_role = 9;
 pub type task_role = ::std::os::raw::c_int;
 pub use self::task_role as task_role_t;
+pub use libc::size_t;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct task_category_policy {
