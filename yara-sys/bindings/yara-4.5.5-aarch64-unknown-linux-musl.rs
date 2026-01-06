@@ -14138,12 +14138,6 @@ extern "C" {
 extern "C" {
     pub static mut signgam: ::std::os::raw::c_int;
 }
-pub const FP_NAN: ::std::os::raw::c_uint = 0;
-pub const FP_INFINITE: ::std::os::raw::c_uint = 1;
-pub const FP_ZERO: ::std::os::raw::c_uint = 2;
-pub const FP_SUBNORMAL: ::std::os::raw::c_uint = 3;
-pub const FP_NORMAL: ::std::os::raw::c_uint = 4;
-pub type _bindgen_ty_12 = ::std::os::raw::c_uint;
 pub type YR_SCANNER = YR_SCAN_CONTEXT;
 extern "C" {
     pub fn yr_scanner_create(
