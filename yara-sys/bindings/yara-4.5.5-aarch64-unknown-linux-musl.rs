@@ -26,13 +26,22 @@ impl<T> __IncompleteArrayField<T> {
     }
 }
 
+impl<T> ::std::default::Default for __IncompleteArrayField<T> {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<T: Copy> ::std::marker::Copy for __IncompleteArrayField<T> {}
+
 impl<T> ::std::clone::Clone for __IncompleteArrayField<T> {
     #[inline]
     fn clone(&self) -> Self {
         *self
     }
 }
-impl<T: Copy> ::std::marker::Copy for __IncompleteArrayField<T> {}
+
 impl<T> ::std::fmt::Debug for __IncompleteArrayField<T> {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         fmt.write_str("__IncompleteArrayField")
