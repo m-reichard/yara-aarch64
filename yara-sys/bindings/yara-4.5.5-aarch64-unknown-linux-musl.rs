@@ -32,7 +32,6 @@ impl<T> ::std::clone::Clone for __IncompleteArrayField<T> {
         *self
     }
 }
-impl<T> ::std::marker::Copy for __IncompleteArrayField<T> {}
 impl<T> ::std::fmt::Debug for __IncompleteArrayField<T> {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         fmt.write_str("__IncompleteArrayField")
@@ -7769,7 +7768,7 @@ fn bindgen_test_layout_RE_AST() {
     );
 }
 #[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RE {
     pub flags: u32,
     pub code: __IncompleteArrayField<u8>,
