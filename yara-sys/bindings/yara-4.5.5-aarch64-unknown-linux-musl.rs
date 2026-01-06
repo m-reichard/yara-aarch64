@@ -7761,7 +7761,7 @@ fn bindgen_test_layout_RE_AST() {
     );
 }
 #[repr(C, packed)]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct RE {
     pub flags: u32,
     pub code: __IncompleteArrayField<u8>,
