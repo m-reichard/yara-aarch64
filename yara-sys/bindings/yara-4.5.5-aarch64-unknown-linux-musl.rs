@@ -4219,18 +4219,18 @@ pub type uintmax_t = __uintmax_t;
 pub type YR_STREAM_READ_FUNC = ::std::option::Option<
     unsafe extern "C" fn(
         ptr: *mut ::std::os::raw::c_void,
-        size: size_t,
-        count: size_t,
+        size: usize,
+        count: usize,
         user_data: *mut ::std::os::raw::c_void,
-    ) -> size_t,
+    ) -> usize,
 >;
 pub type YR_STREAM_WRITE_FUNC = ::std::option::Option<
     unsafe extern "C" fn(
         ptr: *const ::std::os::raw::c_void,
-        size: size_t,
-        count: size_t,
+        size: usize,
+        count: usize,
         user_data: *mut ::std::os::raw::c_void,
-    ) -> size_t,
+    ) -> usize,
 >;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
