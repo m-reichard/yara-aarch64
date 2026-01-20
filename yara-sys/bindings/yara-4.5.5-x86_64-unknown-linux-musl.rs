@@ -8689,11 +8689,6 @@ unsafe extern "C" {
 unsafe extern "C" {
     pub static mut signgam: ::std::os::raw::c_int;
 }
-pub const FP_NAN: _bindgen_ty_12 = 0;
-pub const FP_INFINITE: _bindgen_ty_12 = 1;
-pub const FP_ZERO: _bindgen_ty_12 = 2;
-pub const FP_SUBNORMAL: _bindgen_ty_12 = 3;
-pub const FP_NORMAL: _bindgen_ty_12 = 4;
 pub type _bindgen_ty_12 = ::std::os::raw::c_uint;
 pub type YR_SCANNER = YR_SCAN_CONTEXT;
 unsafe extern "C" {
